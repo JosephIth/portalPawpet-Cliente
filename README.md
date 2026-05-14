@@ -21,7 +21,7 @@ Esta aplicación forma parte de una arquitectura de microservicios que incluye:
 
 ## Requisitos Previos
 
-Antes de instalar y ejecutar la aplicación, asegúrate de tener instalado:
+Antes de instalar y ejecutar la aplicación asegúrate de tener instalado:
 
 - **Node.js** (versión 16 o superior)
 - **npm** o **yarn** (viene incluido con Node.js)

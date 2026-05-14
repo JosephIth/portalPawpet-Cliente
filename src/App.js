@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { Button } from 'pets-ui-lib';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
         >
           Learn React
         </a>
+
       </header>
+        <Button variant="primary"  >Click me</Button>
     </div>
   );
 }

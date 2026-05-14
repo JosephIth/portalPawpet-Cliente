@@ -1,70 +1,166 @@
-# Getting Started with Create React App
+# PawPet Portal Cliente
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Descripción
 
-## Available Scripts
+PawPet Portal Cliente es la interfaz de usuario frontend para el sistema de gestión veterinaria PawPet. Esta aplicación React permite a los dueños de mascotas acceder a sus perfiles, ver información de sus mascotas, consultar historiales médicos y gestionar citas veterinarias.
 
-In the project directory, you can run:
+Esta aplicación forma parte de una arquitectura de microservicios que incluye:
+- **BFF (Backend for Frontend)**: API Gateway que coordina las llamadas a los microservicios
+- **Microservicio de Autenticación**: Manejo de usuarios y tokens JWT
+- **Microservicio de Pacientes**: Gestión de información de mascotas
+- **Microservicio de Historial**: Registros médicos y vacunaciones
 
-### `npm start`
+## Características
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Autenticación segura**: Login y registro con tokens JWT
+- **Gestión de mascotas**: Ver y gestionar información de mascotas
+- **Historial médico**: Consultar consultas, vacunaciones y tratamientos
+- **Interfaz responsiva**: Diseño adaptativo para móviles y desktop
+- **UI moderna**: Componentes estilizados con Pets UI Library
+- **Actualización en tiempo real**: Recarga automática durante desarrollo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Requisitos Previos
 
-### `npm test`
+Antes de instalar y ejecutar la aplicación, asegúrate de tener instalado:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Node.js** (versión 16 o superior)
+- **npm** o **yarn** (viene incluido con Node.js)
+- **Git** (para clonar el repositorio)
 
-### `npm run build`
+### Servicios Backend Requeridos
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Para que la aplicación funcione completamente, necesitas tener corriendo los siguientes servicios backend:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- BFF en `http://localhost:3000`
+- Microservicio de Autenticación en `http://localhost:3001`
+- Microservicio de Pacientes en `http://localhost:3002`
+- Microservicio de Historial en `http://localhost:3003`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Instalación
 
-### `npm run eject`
+1. **Clona el repositorio**:
+   ```bash
+   git clone <url-del-repositorio>
+   cd pawpet-portal-cliente
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Instala las dependencias**:
+   ```bash
+   npm install
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Configura las variables de entorno** (opcional):
+   Crea un archivo `.env` en la raíz del proyecto:
+   ```env
+   REACT_APP_API_URL=http://localhost:3000
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   Si no configuras esta variable, la aplicación usará `http://localhost:3000` por defecto.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Ejecución
 
-## Learn More
+### Modo Desarrollo
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Para ejecutar la aplicación en modo desarrollo:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```
 
-### Code Splitting
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Construcción para Producción
 
-### Analyzing the Bundle Size
+Para crear una versión optimizada para producción:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+Los archivos de producción se generarán en la carpeta `build/`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Ejecutar Tests
 
-### Advanced Configuration
+Para ejecutar los tests:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm test
+```
 
-### Deployment
+## Estructura del Proyecto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
+pawpet-portal-cliente/
+├── public/                 # Archivos estáticos
+│   ├── index.html         # HTML principal
+│   ├── manifest.json      # Manifiesto PWA
+│   └── favicon.ico        # Icono de la aplicación
+├── src/
+│   ├── components/        # Componentes reutilizables
+│   ├── context/           # Contextos de React (AuthContext)
+│   ├── pages/             # Páginas/componentes de rutas
+│   │   ├── Home.js        # Página principal
+│   │   ├── Login.js       # Página de login
+│   │   ├── Register.js    # Página de registro
+│   │   ├── Pets.js        # Lista de mascotas
+│   │   ├── PetDetails.js  # Detalles de mascota
+│   │   └── History.js     # Historial médico
+│   ├── services/          # Servicios de API
+│   │   ├── api.js         # Configuración base de Axios
+│   │   ├── authService.js # Servicios de autenticación
+│   │   ├── patientService.js # Servicios de pacientes
+│   │   └── historialService.js # Servicios de historial
+│   ├── App.js             # Componente principal
+│   ├── App.css            # Estilos globales
+│   └── index.js           # Punto de entrada
+├── package.json           # Dependencias y scripts
+└── README.md              # Este archivo
+```
 
-### `npm run build` fails to minify
+## Tecnologías Utilizadas
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **React 18**: Framework principal
+- **React Router**: Navegación entre páginas
+- **Axios**: Cliente HTTP para llamadas API
+- **Pets UI Library**: Biblioteca de componentes UI personalizada
+- **CSS Modules**: Estilos modulares
+- **Create React App**: Herramienta de construcción
+- **ESLint**: Linting de código
+- **Jest**: Framework de testing
+
+## Configuración Adicional
+
+### Variables de Entorno
+
+| Variable | Descripción | Valor por defecto |
+|----------|-------------|-------------------|
+| `REACT_APP_API_URL` | URL del BFF | `http://localhost:3000` |
+
+### Personalización
+
+- **Título de la aplicación**: Modifica `<title>` en `public/index.html`
+- **Icono**: Reemplaza `public/favicon.ico` y actualiza referencias en `public/index.html`
+- **Manifiesto PWA**: Edita `public/manifest.json` para configuración de app instalable
+
+## Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## Soporte
+
+Para soporte técnico o preguntas:
+- Revisa la documentación de los microservicios backend
+- Verifica que todos los servicios estén corriendo
+- Consulta los logs de la consola del navegador para errores
+
+---
+
+Desarrollado con ❤️ para amantes de las mascotas

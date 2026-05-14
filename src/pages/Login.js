@@ -1,26 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Input } from 'pets-ui-lib';
 import 'pets-ui-lib/dist/styles/pets-ui-lib.css';
 import { LogIn } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 function Login() {
+  const navigate = useNavigate();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Redirigir si ya está autenticado
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', formData);
-    // Aquí iría la lógica de autenticación
+    setError('');
+    setLoading(true);
+
+    try {
+      const result = await login(formData);
+      
+      if (result.success) {
+        navigate('/home');
+      } else {
+        setError(result.message || 'Error al iniciar sesión');
+      }
+    } catch (err) {
+      setError('Error de conexión con el servidor');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,8 +87,10 @@ function Login() {
             />
           </div>
           
-          <Button type="submit" variant="accent" className="login-button">
-            Iniciar Sesión
+          {error && <div className="error-message">{error}</div>}
+          
+          <Button type="submit" variant="accent" className="login-button" disabled={loading}>
+            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </Button>
         </form>
         

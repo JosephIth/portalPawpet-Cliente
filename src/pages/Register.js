@@ -1,34 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Input } from 'pets-ui-lib';
 import 'pets-ui-lib/dist/styles/pets-ui-lib.css';
 import { UserPlus } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import './Register.css';
 
 function Register() {
+  const navigate = useNavigate();
+  const { register, isAuthenticated, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Redirigir si ya está autenticado
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
       return;
     }
     
-    console.log('Registro:', formData);
-    // Aquí iría la lógica de registro
+    if (formData.password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+    
+    setLoading(true);
+
+    try {
+      const userData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: 'user'
+      };
+      
+      const result = await register(userData);
+      
+      if (result.success) {
+        navigate('/home');
+      } else {
+        setError(result.message || 'Error al registrar usuario');
+      }
+    } catch (err) {
+      setError('Error de conexión con el servidor');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,8 +133,10 @@ function Register() {
             />
           </div>
           
-          <Button type="submit" variant="accent" className="register-button">
-            Crear Cuenta
+          {error && <div className="error-message">{error}</div>}
+          
+          <Button type="submit" variant="accent" className="register-button" disabled={loading}>
+            {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
           </Button>
         </form>
         

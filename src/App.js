@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import { Button } from 'pets-ui-lib';
+import { Button, Input, SearchInput } from 'pets-ui-lib';
+import 'pets-ui-lib/dist/styles/pets-ui-lib.css';
+import { Plus } from 'lucide-react';
 
 function App() {
   return (
@@ -20,7 +22,7 @@ function App() {
         </a>
 
       </header>
-        <Button variant="primary"  >Click me</Button>
+        <Button variant="accent" icon={<Plus />} >Click me</Button>
     </div>
   );
 }
